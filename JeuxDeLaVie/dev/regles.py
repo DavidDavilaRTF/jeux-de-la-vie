@@ -62,20 +62,38 @@ class regles_jdv:
 fen = Tk()
 can = Canvas(fen, width =1000, height =1000, bg ='white')
 can.pack(side =TOP, padx =5, pady =5)
-jdv = regles_jdv(n_plateau = 40,
+jdv = regles_jdv(n_plateau = 1,
                 min_around_survie = 2,
                 max_around_survie = 3,
                 min_around_naissance = 3,
                 max_around_naissance = 3,
-                n_random = 0.1,
+                n_random = 0.2,
                 can = can)
-jdv.init_fill()
+        
 def play():
+    global jdv
+    if jdv.n_plateau == 1:
+        jdv = regles_jdv(n_plateau = int(entree.get()),
+                        min_around_survie = 2,
+                        max_around_survie = 3,
+                        min_around_naissance = 3,
+                        max_around_naissance = 3,
+                        n_random = 0.2,
+                        can = can)
+        jdv.init_fill()
+
     jdv.next_gen()
     jdv.display()
     flag = numpy.sum(jdv.plateau)
     if flag > 0:
         fen.after(50,play)
+
 b1 = Button(fen, text ='Go!', command =play)
 b1.pack(side =LEFT, padx =3, pady =3)
+entree = Entry(fen)
+# entree.bind("<Return>", init_jeux_de_la_vie)
+entree.pack(side =RIGHT)
+chaine = Label(fen)
+chaine.configure(text = "taille du jdv :")
+chaine.pack(side =RIGHT)
 fen.mainloop()
